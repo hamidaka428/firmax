@@ -1,0 +1,16 @@
+services:                               # The services for this project
+  db:                                   # Our database service, named "db"
+    image: postgres:17-alpine           # Pulls a small Alpine Linux image with PostgreSQL 17
+    container_name: erp_postgres        # The container name shown in Docker
+    restart: unless-stopped             # Starts again automatically with Docker after a reboot
+    environment:                        # Settings applied on the first start:
+      POSTGRES_USER: erp_admin          # -> creates the admin user
+      POSTGRES_PASSWORD: erp_dev_password # -> sets its password (change it outside local development)
+      POSTGRES_DB: erp_database         # -> creates an empty database with this name
+    ports:
+      - "5432:5432"                     # Host port 5432 → container port 5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data # Persists the database files in a named volume
+
+volumes:
+  pgdata:                               # The named volume, so data survives container restarts
